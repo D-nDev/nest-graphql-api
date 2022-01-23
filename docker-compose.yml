@@ -1,0 +1,43 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:13
+    container_name: postgres
+    restart: always
+    command: postgres -c listen_addresses='*'
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U prisma -d nestapi"]
+      interval: 10s
+      timeout: 7s
+      retries: 5
+    ports:
+      - 5432:5432
+    environment:
+        - POSTGRES_USER=prisma
+        - POSTGRES_PASSWORD=123456
+        - POSTGRES_DB=nestapi
+    volumes:
+      - pgdata:/data/postgres
+      
+  nest-api:
+    container_name: nest-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 4000:4000
+    depends_on:
+      postgres:
+        condition: service_healthy
+    links:
+      - postgres
+    environment:
+        - DATABASE_URL=postgresql://prisma:123456@postgres:5432/nestapi?schema=public
+    volumes:
+        - .:/usr/app
+        - /usr/app/node_modules
+
+volumes:
+  pgdata:
+    driver: local
+  node_modules:

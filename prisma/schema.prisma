@@ -20,5 +20,5 @@ model Products {
   name         String
   manufacturer String
   stock        Int
-  price        Int
+  price        Float
 }

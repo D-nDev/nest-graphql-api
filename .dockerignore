@@ -1,0 +1,9 @@
+.git
+.vscode
+.env
+.env.example
+.gitignore
+.editorconfig
+backup
+dist
+node_modules
