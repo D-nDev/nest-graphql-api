@@ -22,52 +22,237 @@
   <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
-## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Dependencies(Using Docker)
 
-## Installation
+- Visual Studio Code OR another Modern IDE
+- Docker
+- Docker Compose
+- Ports 4000 and 5432 opened and free
+- PG Admin(Recommended)
+- Postman(Recommended)
 
-```bash
-$ npm install
-```
-
-## Running the app
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Test
+Clone the project
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+  git clone https://github.com/D-nDev/nest-graphql-api.git
 ```
 
-## Support
+Go to the project directory
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+  cd nest-graphql-api
+```
 
-## Stay in touch
+Run Docker compose
+```bash
+  docker-compose up --build --force-recreate -d
+```
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Server will be available at:
 
-## License
+- localhost:4000/graphql - GraphQL Playground
+## Dependencies(If you'll not use docker)
 
-Nest is [MIT licensed](LICENSE).
+For this project you'll need:
+
+* Visual Studio Code OR another Modern IDE
+* Postgres
+* Postman(Highly Recommended)
+* PG Admin(Recommended)
+* NPM or Yarn
+## Run Locally
+
+Clone the project
+
+```bash
+  git clone https://github.com/D-nDev/nest-graphql-api.git
+```
+
+Go to the project directory
+
+```bash
+  cd nest-graphql-api
+```
+
+Install dependencies
+
+```bash
+  npm install or yarn
+```
+
+**IMPORTANT: Configure your .env following the .env.example BEFORE GO TO THE NEXT STEP**
+
+After, Run Prisma migrations
+
+```bash
+  npx prisma migrate dev --name init && npx prisma generate
+```
+
+**Important: after this re-open your visual studio code/IDE**
+
+Start the DEV server
+
+```bash
+  npm run start:dev or yarn start:dev
+```
+
+**OR**
+
+To Build for production
+
+```bash
+  npm run build or yarn build
+```
+
+
+## Environment Variables
+
+To run this project, you will need to add the following environment variables to your .env file, **follow the .env.example**
+
+`DATABASE_URL`
+
+
+## API Reference(GraphQL)
+
+#### Create one product(mutation)
+
+```
+  mutation createProduct{
+    createProduct(data:{
+      name: "productName",
+      manufacturer: "productManufacturer",
+      stock: 2,
+      price: 15
+    }){
+      id
+      name
+      manufacturer
+      stock
+      price
+    }
+}
+```
+
+#### Get all products(Query)
+
+```
+  query getProducts {
+  products{
+    id,
+    name,
+    manufacturer,
+    price,
+    stock
+  }
+}
+```
+
+#### Get One product(query)
+
+```
+query getProduct {
+  product(id: 1){
+    id,
+    name,
+    manufacturer,
+    price,
+    stock
+  }
+}
+
+```
+
+#### Delete One product(mutation)
+
+```
+mutation deleteProduct {
+  deleteProduct(id: 1)
+}
+
+```
+
+#### Update One product(mutation)
+
+```
+mutation updateProduct{
+  updateProduct(data: {
+    name: "testupdate"
+  }id: 1){
+    id,
+    name,
+    manufacturer,
+    price,
+    stock
+  }
+}
+
+```
+
+#### Count products(query)
+
+```
+query countProducts {
+  countProducts
+}
+
+```
+
+#### Low Stock(query)
+
+```
+query lowestStock {
+  lowestStock{
+    id,
+    name,
+    manufacturer,
+    price,
+    stock
+  }
+}
+
+```
+
+#### Great Stock(query)
+
+```
+query highestStock {
+  highestStock{
+    id,
+    name,
+    manufacturer,
+    price,
+    stock
+  }
+}
+
+```
+
+#### No Stock(less than 5);(query)
+
+```
+query noStock {
+  noStock{
+    id,
+    name,
+    manufacturer,
+    price,
+    stock
+  }
+}
+
+```
+
+
+## Running Tests
+
+To run tests, you need:
+
+- An instance of a psql running locally or inside docker
+
+After, run the following command
+
+```bash
+  npm run test or yarn test
+```
+
